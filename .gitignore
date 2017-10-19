@@ -7,3 +7,5 @@ __pycache__/
 
 # Virtual Environments
 mnist-env/
+
+.DS_Store
