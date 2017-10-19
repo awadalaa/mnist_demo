@@ -1,13 +1,19 @@
 let reset = false;
 let drawing = false;
 
+let canvas;
+let predict;
 let outputResult;
-let submitButton;
 
 function setup() {
-    var canvas = createCanvas(400, 400);
+    canvas = createCanvas(400, 400);
+    canvas.parent('draw-canvas');
     canvas.mousePressed(startDrawing);
     canvas.mouseReleased(stopDrawing);
+
+    predict = createButton('predict')
+    predict.mousePressed(onPredict);
+
     background(0);
 }
 
@@ -29,4 +35,9 @@ function startDrawing() {
 
 function stopDrawing() {
     drawing = false;
+}
+
+function onPredict() {
+    reset = true;
+    print('predict');
 }
