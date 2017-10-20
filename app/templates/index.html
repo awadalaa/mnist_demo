@@ -8,6 +8,7 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
       integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
       crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}"></link>
     <script src="static/js/p5.min.js"></script>
     <script src="static/js/p5.dom.min.js"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/sketch.js')}}"></script>
@@ -22,12 +23,10 @@
 
         </div>
       </div>
-      
       <div class="col-md-6">
         <h2>Prediction</h2>
-        <div id="output">
-        	OUTPUT PREDICTION
-        </div>
+        <div id="prediction-button"></div>
+        <div id="output"></div>
       </div> 
     <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
   </body>

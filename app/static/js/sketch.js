@@ -11,7 +11,8 @@ function setup() {
     canvas.mousePressed(startDrawing);
     canvas.mouseReleased(stopDrawing);
 
-    predict = createButton('predict')
+    predict = createButton('predict');
+    predict.parent('prediction-button').addClass('btn-lg').addClass('btn-primary');
     predict.mousePressed(onPredict);
 
     background(0);
@@ -38,6 +39,22 @@ function stopDrawing() {
 }
 
 function onPredict() {
-    reset = true;
-    print('predict');
+    const img = get();
+    const base64 = img.canvas.toDataURL().replace('data:image/png;base64,', '');;
+    const data = {
+        img: base64
+    }
+
+    httpPost('/api/predict', data, success, error);
+
+    function success(reply) {
+        const result = JSON.parse(reply);
+        console.log(result)
+        $('#output').text(result.predicted_class);
+        reset = true;
+    }
+
+    function error(reply) {
+        console.log(reply)
+    }
 }
