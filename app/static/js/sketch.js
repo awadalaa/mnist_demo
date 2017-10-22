@@ -55,6 +55,7 @@ function onPredict() {
     }
 
     function error(reply) {
+        reset = true;
         console.log(reply)
     }
 }

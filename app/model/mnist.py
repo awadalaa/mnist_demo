@@ -1,8 +1,8 @@
 import tensorflow as tf
 # The MNIST data is split into three parts:
-# 	55,000 data points of training data (mnist.train),
-# 	10,000 points of test data (mnist.test),
-# 	and 5,000 points of validation data (mnist.validation). 
+#   55,000 data points of training data (mnist.train),
+#   10,000 points of test data (mnist.test),
+#   and 5,000 points of validation data (mnist.validation). 
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
@@ -12,11 +12,11 @@ mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 # the training labels are mnist.train.labels
 # 
 # Each image is 28 pixels by 28 pixels. We can interpret this as a big array of numbers:
-x = tf.placeholder(tf.float32, [None, 784])
-W = tf.Variable(tf.zeros([784, 10]))
-b = tf.Variable(tf.zeros([10]))
+x = tf.placeholder(tf.float32, [None, 784],name="x")
+W = tf.Variable(tf.zeros([784, 10]),name='W')
+b = tf.Variable(tf.zeros([10]),name='b')
 
-y = tf.nn.softmax(tf.matmul(x,W) + b)
+y = tf.nn.softmax(tf.matmul(x,W) + b, name='y')
 y_ = tf.placeholder(tf.float32, [None, 10])
 
 cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
@@ -24,14 +24,19 @@ cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=
 train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
 
 sess = tf.InteractiveSession()
-
+saver = tf.train.Saver()
 tf.global_variables_initializer().run()
 
 for _ in range(100):
-	batch_xs, batch_ys = mnist.train.next_batch(100)
-	sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
+    batch_xs, batch_ys = mnist.train.next_batch(100)
+    sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
 
 correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 print('model accuracy:',sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
+
+save_path = saver.save(sess, "./v1.00/model.ckpt")
+print("Model saved in file: %s" % save_path)
+
+sess.close()
