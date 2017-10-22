@@ -18,23 +18,7 @@ def index():
 def prediction():
     # Get json data from user
     data = request.get_json('img')
-    img_base64 = data['img']
-
-    # Process image from byte64 encoding -> image -> tensor
-    img = Image.open(BytesIO(base64.b64decode(img_base64)))
-    img = img.convert(mode='L')
-    img = img.resize((28, 28), resample=Image.NEAREST)
-    tensor = np.invert(np.array(img.getdata()))
-    tensor = tensor.reshape((1, 784))
-    img.close()
-
-    print('tensor_shape:',tensor.shape)
-
-    # recreating the graph
-    # x = tf.placeholder(tf.float32, [None, 784])
-    # W = tf.Variable(tf.zeros([784, 10]))
-    # b = tf.Variable(tf.zeros([10]))
-    # y = tf.nn.softmax(tf.matmul(x,W) + b)
+    tensor = process_img(data)
 
     # Launch the graph
     with tf.Session() as sess:
@@ -51,10 +35,16 @@ def prediction():
         # #Now, access the op that you want to run. 
         one_hot_vector = sess.run(y, feed_dict=feed_dict)
         digit = tf.argmax(one_hot_vector, axis=1)
-        digit = digit.eval()[0]
-        print('one_hot_vector:',one_hot_vector)
-    print('Test Accuracy: {}'.format(one_hot_vector[0][digit]))
-    return jsonify(status='success',
-                   probabilities=float(one_hot_vector[0][digit]),
-                   predicted_class=digit)
+        digit = sess.run(digit)[0]
+    return jsonify(status='success', predicted_class=digit)
 
+def process_img(data):
+    img_base64 = data['img']
+    # Process image from byte64 encoding -> image -> tensor
+    img = Image.open(BytesIO(base64.b64decode(img_base64)))
+    img = img.convert(mode='L')
+    img = img.resize((28, 28), resample=Image.NEAREST)
+    tensor = np.invert(np.array(img.getdata()))
+    tensor = tensor.reshape((1, 784))
+    img.close()
+    return tensor
