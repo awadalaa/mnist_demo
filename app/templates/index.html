@@ -1,34 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset='UTF-8'/>
-    <title>mnist demo</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-      integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-      crossorigin="anonymous">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}"></link>
-    <script src="static/js/p5.min.js"></script>
-    <script src="static/js/p5.dom.min.js"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='js/sketch.js')}}"></script>
+    <title>MNIST</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"> -->
   </head>
-  <body class='container'>
-    <h1>mnist classifier</h1>
-    <hr>
-    <div class="container-fluid">
-      <div class="col-md-6">
-        <h2>Draw a single digit number</h2>
-        <div id="draw-canvas">
-
+  <body>
+    <div class="container">
+      <h1>MNIST</h1>
+      <div class="row">
+        <div class="col-md-6">
+          <p>draw a digit here!</p>
+          <canvas id="main"></canvas>
+          <p>
+            <button id="clear" class="btn btn-info">clear</button>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p>input:</p>
+          <canvas id="input" style="border:1px solid" width="140" height="140"></canvas>
+          <hr>
+          <p>output:</p>
+          <table id="output" class="table">
+            <tr>
+              <th class="col-md-1"></th>
+              <th class="col-md-2">regression</th>
+              <th class="col-md-2">convolutional</th>
+            </tr>
+            <tr><th>0</th><td></td><td></td></tr>
+            <tr><th>1</th><td></td><td></td></tr>
+            <tr><th>2</th><td></td><td></td></tr>
+            <tr><th>3</th><td></td><td></td></tr>
+            <tr><th>4</th><td></td><td></td></tr>
+            <tr><th>5</th><td></td><td></td></tr>
+            <tr><th>6</th><td></td><td></td></tr>
+            <tr><th>7</th><td></td><td></td></tr>
+            <tr><th>8</th><td></td><td></td></tr>
+            <tr><th>9</th><td></td><td></td></tr>
+          </table>
         </div>
       </div>
-      <div class="col-md-6">
-        <h2>Then classify the image</h2>
-        <div id="prediction-button"></div>
-        <div id="output"></div>
-      </div> 
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    </div>
   </body>
+  <footer>
+      <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='js/base.js') }}"></script>
+  </footer>
 </html>
