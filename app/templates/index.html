@@ -8,17 +8,17 @@
   </head>
   <body>
     <div class="container">
-      <h1>MNIST</h1>
       <div class="row">
-        <div class="col-md-6">
-          <p>draw a digit here!</p>
+        <div class="col-lg-6">
+          <p>draw a digit below</p>
           <canvas id="main"></canvas>
           <p>
             <button id="clear" class="btn btn-info">clear</button>
           </p>
+          <p>The <a href="http://yann.lecun.com/exdb/mnist/">mnist dataset</a> contains 60,000 examples of handwritten digits and a test set of 10,000 examples. Every MNIST data point has two parts: a 28x28 pixel image and a corresponding label between 0 and 9. In this case we trained a softmax regression model and a convolutional neural net.  Draw a digit above to see how they compare.</p>
         </div>
-        <div class="col-md-6">
-          <p>input:</p>
+        <div class="col-lg-6">
+          <p>28 x 28 input</p>
           <canvas id="input" style="border:1px solid" width="140" height="140"></canvas>
           <hr>
           <table id="output" class="table">
