@@ -1,3 +1,5 @@
+Pipfile*
+
 # Byte-compiled folders
 __pycache__/
 *.pyc
