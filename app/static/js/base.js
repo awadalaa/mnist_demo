@@ -6,9 +6,11 @@ class Main {
         this.canvas.width  = 449; // 16 * 28 + 1
         this.canvas.height = 449; // 16 * 28 + 1
         this.ctx = this.canvas.getContext('2d');
-        this.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
-        this.canvas.addEventListener('mouseup',   this.onMouseUp.bind(this));
-        this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+
+        $(this.canvas).bind('touchstart mousedown', this.onMouseDown.bind(this));
+        $(this.canvas).bind('touchend mouseup',   this.onMouseUp.bind(this));
+        $(this.canvas).bind('touchemove mousemove', this.onMouseMove.bind(this));
+
         this.initialize();
     }
     initialize() {
@@ -86,39 +88,39 @@ class Main {
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(inputs),
-                success: (data) => {
-                    console.log(data);
-                    for (let i = 0; i < 2; i++) {
-                        var max = 0;
-                        var max_index = 0;
-                        for (let j = 0; j < 10; j++) {
-                            var value = Math.round(data.results[i][j] * 1000);
-                            if (value > max) {
-                                max = value;
-                                max_index = j;
-                            }
-                            var digits = String(value).length;
-                            for (var k = 0; k < 3 - digits; k++) {
-                                value = '0' + value;
-                            }
-                            var text = '0.' + value;
-                            if (value > 999) {
-                                text = '1.000';
-                            }
-                            $('#output tr').eq(j + 1).find('td').eq(i).text(text);
-                        }
-                        for (let j = 0; j < 10; j++) {
-                            if (j === max_index) {
-                                $('#output tr').eq(j + 1).find('td').eq(i).addClass('bg-success');
-                            } else {
-                                $('#output tr').eq(j + 1).find('td').eq(i).removeClass('bg-success');
-                            }
-                        }
-                    }
-                }
+                success: this.onResponse.bind(this)
             });
         };
         img.src = this.canvas.toDataURL();
+    }
+    onResponse(data) {
+        for (let i = 0; i < 2; i++) {
+            var max = 0;
+            var max_index = 0;
+            for (let j = 0; j < 10; j++) {
+                var value = Math.round(data.results[i][j] * 1000);
+                if (value > max) {
+                    max = value;
+                    max_index = j;
+                }
+                var digits = String(value).length;
+                for (var k = 0; k < 3 - digits; k++) {
+                    value = '0' + value;
+                }
+                var text = '0.' + value;
+                if (value > 999) {
+                    text = '1.000';
+                }
+                $('#output tr').eq(j + 1).find('td').eq(i).text(text);
+            }
+            for (let j = 0; j < 10; j++) {
+                if (j === max_index) {
+                    $('#output tr').eq(j + 1).find('td').eq(i).addClass('bg-success');
+                } else {
+                    $('#output tr').eq(j + 1).find('td').eq(i).removeClass('bg-success');
+                }
+            }
+        }
     }
 }
 
