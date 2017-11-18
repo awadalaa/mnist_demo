@@ -9,7 +9,8 @@ class Main {
 
         $(this.canvas).bind('touchstart mousedown', this.onMouseDown.bind(this));
         $(this.canvas).bind('touchend mouseup',   this.onMouseUp.bind(this));
-        $(this.canvas).bind('touchemove mousemove', this.onMouseMove.bind(this));
+        $(this.canvas).bind('touchmove', this.onTouchMove.bind(this));
+        $(this.canvas).bind('mousemove', this.onMouseMove.bind(this));
 
         this.initialize();
     }
@@ -40,22 +41,31 @@ class Main {
         this.drawing = true;
         this.prev = this.getPosition(e.clientX, e.clientY);
     }
-    onMouseUp() {
+    onMouseUp(e) {
         this.drawing = false;
         this.drawInput();
+    }
+    onTouchMove(e) {
+        if (this.drawing) {
+            var curr = this.getPosition(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+            this.drawOnCanvas(curr);
+        }
     }
     onMouseMove(e) {
         if (this.drawing) {
             var curr = this.getPosition(e.clientX, e.clientY);
-            this.ctx.lineWidth = 20;
-            this.ctx.lineCap = 'round';
-            this.ctx.beginPath();
-            this.ctx.moveTo(this.prev.x, this.prev.y);
-            this.ctx.lineTo(curr.x, curr.y);
-            this.ctx.stroke();
-            this.ctx.closePath();
-            this.prev = curr;
+            this.drawOnCanvas(curr);
         }
+    }
+    drawOnCanvas(curr) {
+        this.ctx.lineWidth = 20;
+        this.ctx.lineCap = 'round';
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.prev.x, this.prev.y);
+        this.ctx.lineTo(curr.x, curr.y);
+        this.ctx.stroke();
+        this.ctx.closePath();
+        this.prev = curr;
     }
     getPosition(clientX, clientY) {
         var rect = this.canvas.getBoundingClientRect();
