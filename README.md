@@ -12,7 +12,9 @@ Clone the respository:
 
 ## Install Dependencies such as virtualenv, flask, and tensorflow
 `pip install -r requirements.txt`
+
 `virtualenv env`
+
 `source env/bin/activate`
 
 ## Start the server
